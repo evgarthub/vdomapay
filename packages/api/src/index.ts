@@ -1,21 +1,47 @@
-import { Elysia, t } from "elysia";
-import { mainDatabase } from "./data/mainDatabase";
-import { Utility } from "@vdomapay/types";
-import { utilityPostSchema } from "./requestTypes";
+import { Elysia } from "elysia";
+import {
+  utilityDeleteSchema,
+  utilityGetSchema,
+  utilityPostSchema,
+} from "./requestTypes";
 import { cors } from "@elysiajs/cors";
+import { swagger } from "@elysiajs/swagger";
+import { postUtilities } from "./controllers/postUtilities";
+import { getUtilities } from "./controllers/getUtilities";
+import { deleteUtility } from "./controllers/deleteUtility";
 
 const app = new Elysia()
   .use(cors())
-  .get("/", () => "Hello Elysia")
-  .get("/utilities", async () => {
-    const utilities = await mainDatabase.read<Utility[]>("utilities");
-    return utilities;
-  })
+  .use(
+    swagger({
+      documentation: {
+        tags: [
+          { name: "Utilities", description: "CRUD operations on Utilities" },
+          { name: "Records", description: "CRUD operations on Records" },
+          { name: "Tariffs", description: "CRUD operations on Tariffs" },
+          { name: "Bills", description: "CRUD operations on Bills" },
+        ],
+      },
+    })
+  )
+  .get(
+    "/utilities",
+    async () => {
+      return await getUtilities();
+    },
+    utilityGetSchema
+  )
+  .delete(
+    "/utilities/:id",
+    async ({ params }) => {
+      return await deleteUtility(params.id);
+    },
+    utilityDeleteSchema
+  )
   .post(
     "/utilities",
     async ({ body }) => {
-      const utility = await mainDatabase.create<Utility>("utilities", body);
-      return utility;
+      return await postUtilities(body);
     },
     utilityPostSchema
   )

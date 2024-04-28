@@ -1,44 +1,53 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-
+import { useEffect, useState } from "react";
+import { Button, Wrap, WrapItem } from "@chakra-ui/react";
 import { useUtilitiesQuery } from "./dataLayer/queries/useUtilitiesQuery";
 import useCreateUtilityMutation from "./dataLayer/mutations/useCreateUtilityMutation";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Tag } from "./components";
+import { useDeleteUtilityMutation } from "./dataLayer/mutations/useDeleteUtilityMutation";
 
 function App() {
+  const { data, isFetched } = useUtilitiesQuery();
   const [count, setCount] = useState(0);
-  const { data } = useUtilitiesQuery();
   const { mutateAsync: createUtility } = useCreateUtilityMutation();
+  const { mutateAsync: deleteUtility } = useDeleteUtilityMutation();
+
+  useEffect(() => {
+    if (isFetched) {
+      setCount(data?.[data?.length - 1]?.key || 0 + 1);
+    }
+  }, [data, isFetched]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
+    <ChakraProvider>
       <h1>Vite + React</h1>
       <div className="card">
-        <button
+        <Button
           onClick={() => {
             createUtility({ id: count.toString(), name: `utility ${count}` });
             setCount((count) => count + 1);
           }}
         >
-          count is {count}
-        </button>
+          Create Utility #{count}
+        </Button>
         <p>
           <strong>Utilities:</strong>
-          {data ? data.map((utility) => utility.name).join(", ") : "loading..."}
+          <Wrap>
+            {data
+              ? data.map((utility) => (
+                  <WrapItem>
+                    <Tag
+                      label={utility.name}
+                      id={utility.id}
+                      onClose={() => deleteUtility(utility.id)}
+                    />
+                  </WrapItem>
+                ))
+              : "loading..."}
+          </Wrap>
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </ChakraProvider>
   );
 }
 
