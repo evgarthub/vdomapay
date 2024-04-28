@@ -6,9 +6,11 @@ import {
 } from "./requestTypes";
 import { cors } from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
-import { postUtilities } from "./controllers/postUtilities";
-import { getUtilities } from "./controllers/getUtilities";
-import { deleteUtility } from "./controllers/deleteUtility";
+import {
+  postUtilities,
+  getUtilities,
+  deleteUtility,
+} from "./controllers/utilityController";
 
 const app = new Elysia()
   .use(cors())

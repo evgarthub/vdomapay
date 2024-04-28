@@ -106,6 +106,7 @@ class MainDatabase {
       `DELETE FROM ${table}`,
       conditions
     );
+
     const statement = await this.db.prepare(DELETE_QUERY);
     await statement.run(...params);
     statement.finalize();
