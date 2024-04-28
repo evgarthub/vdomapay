@@ -1,0 +1,19 @@
+{
+  "name": "api",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun build ./index.ts --outdir ./dist"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "1.0.2",
+    "@elysiajs/html": "1.0.2",
+    "elysia": "1.0.15"
+  },
+  "devDependencies": {
+    "bun-types": "1.1.6",
+    "@vdomapay/types": "workspace:*"
+  },
+  "module": "src/index.js"
+}

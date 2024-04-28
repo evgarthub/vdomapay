@@ -1,0 +1,21 @@
+{
+  "name": "@vdomapay/types",
+  "private": true,
+  "version": "1.0.0",
+  "main": "",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "keywords": [
+    "typescript",
+    "types",
+    "vdomapay"
+  ],
+  "author": "Yevhen Kifiak",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "5.4.5"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "vdomapay",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"tsc --watch --project packages/types/tsconfig.json\" \"bun run --watch packages/api/src/index.ts\" \"bunx --bun vite -c packages/client/vite.config.js\""
+  },
+  "devDependencies": {
+    "concurrently": "8.2.2"
+  }
+}
