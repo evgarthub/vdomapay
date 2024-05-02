@@ -1,19 +1,35 @@
-import { Utility } from "@vdomapay/types";
-import { mainDatabase } from "../data";
+import { t } from 'elysia';
+import { UtilityData } from '@vdomapay/types';
+import { BaseController } from './baseController';
 
-export const deleteUtility = async (id: string) => {
-  await mainDatabase.delete("utilities", `id = '${id}'`);
+const ENTITY_NAME = 'utility';
+export const utilityController = new BaseController<UtilityData>(ENTITY_NAME);
+
+export const utilityPostSchema = {
+    detail: {
+        tags: ['Utilities'],
+    },
+    body: t.Object({ id: t.String(), name: t.String(), unit: t.String() }),
 };
 
-export const getUtilities = async (): Promise<Utility[]> => {
-  const utilities = await mainDatabase.read<Utility>("utilities");
-  return utilities;
+export const utilityDeleteSchema = {
+    detail: {
+        tags: ['Utilities'],
+    },
+    params: t.Object({
+        id: t.String(),
+    }),
 };
 
-export const postUtilities = async (body: {
-  name: string;
-  id: string;
-}): Promise<Utility | undefined> => {
-  const createdUtility = await mainDatabase.create<Utility>("utilities", body);
-  return createdUtility;
+export const utilityGetSchema = {
+    detail: {
+        tags: ['Utilities'],
+    },
+};
+
+export const utilityPutSchema = {
+    detail: {
+        tags: ['Utilities'],
+    },
+    body: t.Object({ id: t.String(), name: t.String(), unit: t.String(), key: t.Number() }),
 };
